@@ -1,7 +1,7 @@
 import random
 
 def load_puzzle():
-    """Function to load board with to be solved. The puzzle represents 3x3 elements, 
+    """Function to load board to be solved. The puzzle represents 3x3 elements, 
     3 across, 3 down. There should be nine lines of nine numbers 0-9 separated by commas."""
     
     board = [[0 for x in range(9)] for y in range(9)]
@@ -24,17 +24,36 @@ def load_puzzle():
     display_unsolved_puzzle(board)
 
 def display_unsolved_puzzle(board):
-    top = "|----------------------------|"
-    middle = "|-------+----------+---------|"
+    top = "|--------------------------------|"
+    mid = "|----------+----------+----------|"
 
     print(top)
     for x in range(9):
         for y in range(9):
-            if (x % 3 == 0):
+            if ((x == 3 or x == 6) and y == 0):
+                print(mid)
+            if (y == 0 or y == 3 or y == 6):
+                print("|", end=" ")
+            print(" " + str(board[x][y]), end=" ")
+            if y == 8:
                 print("|")
-            print(" " + board[x][y] + " ")
+
+    print(top)
 
 load_puzzle()
 
 
 # def autofill_puzzle():
+
+
+# def print_board():
+
+#     board = []
+#     for i in range(81):
+#         board.append('0 ')
+
+#     print('\n'.join(''.join(board[i:i+9]) for i in xrange(0,81,9)))
+
+# print_board()
+
+# def solved_puzzle(board):
