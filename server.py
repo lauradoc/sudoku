@@ -1,59 +1,64 @@
-import random
+import argparse
+from Tkinter import Tk, Canvas, Frame, Button, BOTH, TOP, BOTTOM
 
-def load_puzzle():
-    """Function to load board to be solved. The puzzle represents 3x3 elements, 
-    3 across, 3 down. There should be nine lines of nine numbers 0-9 separated by commas."""
+
+
+
+
+
+# import random
+
+# def load_puzzle():
+#     """Function to load board to be solved. The puzzle represents 3x3 elements, 
+#     3 across, 3 down. There should be nine lines of nine numbers 1-9 separated by commas.
+#     Blank spaces are represented by 0's"""
     
-    board = [[0 for x in range(9)] for y in range(9)]
+#     board = [[0 for x in range(9)] for y in range(9)]
 
-    for i in range(9):
-        for j in range(9):
-            board[i][j] = 0
-    # fileHandle = open("board.txt")
-    # puzzle = fileHandle.readlines()
-    # for line in range(len(puzzle)):
-    #     board.append
-    
-    # while len(board) < 10:
-    #     num = randint(1,9)
-    #     if num not in board:
-    #         board.append(num)
+#     # for i in range(9):
+#     #     for j in range(9):
+#     #         board[i][j] = 0
+   
+#     display_puzzle(board)
 
-    #     if len(board) == 9 or 18 or 27 or 36 or 45 or 54 or 63 or 72:
-    #         n
-    display_unsolved_puzzle(board)
+#     # for i in range(9):
+#     #     num = random.randrange(1,10)
+#     #     row = random.randrange(9)
+#     #     col = random.randrange(9)
+#     #     while not CheckValid(board, row, col, num) or board[row][col] != 0:
+#     #         num = random.randrange(1,10)
+#     #         row = random.randrange(9)
+#     #         col = random.randrange(9)
+        
+#     #     board[row][col] = num
 
-def display_unsolved_puzzle(board):
-    top = "|--------------------------------|"
-    mid = "|----------+----------+----------|"
-
-    print(top)
-    for x in range(9):
-        for y in range(9):
-            if ((x == 3 or x == 6) and y == 0):
-                print(mid)
-            if (y == 0 or y == 3 or y == 6):
-                print("|", end=" ")
-            print(" " + str(board[x][y]), end=" ")
-            if y == 8:
-                print("|")
-
-    print(top)
-
-load_puzzle()
+#     for i in range(20):
 
 
-# def autofill_puzzle():
+
+# def display_puzzle(board):
+#     top = "|--------------------------------|"
+#     mid = "|----------+----------+----------|"
+
+#     print(top)
+#     for x in range(9):
+#         for y in range(9):
+#             if ((x == 3 or x == 6) and y == 0):
+#                 print(mid)
+#             if (y == 0 or y == 3 or y == 6):
+#                 print("|", end=" ")
+#             print(" " + str(board[x][y]), end=" ")
+#             if y == 8:
+#                 print("|")
+
+#     print(top)
+
+# # def CheckValid(board, row, col, num):
+
+# #     for y in range(9):
+# #         for x in range(9):
 
 
-# def print_board():
 
-#     board = []
-#     for i in range(81):
-#         board.append('0 ')
+# load_puzzle()
 
-#     print('\n'.join(''.join(board[i:i+9]) for i in xrange(0,81,9)))
-
-# print_board()
-
-# def solved_puzzle(board):
