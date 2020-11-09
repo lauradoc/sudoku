@@ -107,61 +107,115 @@ class SudokuGame(object):
         )
 
 
-
-
-# import random
-
-# def load_puzzle():
-#     """Function to load board to be solved. The puzzle represents 3x3 elements, 
-#     3 across, 3 down. There should be nine lines of nine numbers 1-9 separated by commas.
-#     Blank spaces are represented by 0's"""
-    
-#     board = [[0 for x in range(9)] for y in range(9)]
-
-#     # for i in range(9):
-#     #     for j in range(9):
-#     #         board[i][j] = 0
-   
-#     display_puzzle(board)
-
-#     # for i in range(9):
-#     #     num = random.randrange(1,10)
-#     #     row = random.randrange(9)
-#     #     col = random.randrange(9)
-#     #     while not CheckValid(board, row, col, num) or board[row][col] != 0:
-#     #         num = random.randrange(1,10)
-#     #         row = random.randrange(9)
-#     #         col = random.randrange(9)
+class SudokuUI(Frame):
+    """
+    The Tkinter UI, responsible for drawing the board and accepting user input.
+    """
+    def __init__(self, parent, game):
+        self.game = game
+        self.parent = parent
+        Frame.__init__(self, parent)
         
-#     #     board[row][col] = num
+        self.row, self,column = 0, 0
 
-#     for i in range(20):
+        self.__initUI()
+
+    def __initUI(self):
+        self.parent.title("Sudoku")
+        self.pack(fill=BOTH, expand=1)
+        self.canvas = Canvas(self, width=WIDTH, height=HEIGHT)
+        self.canvas.pack(fill=BOTH, side=TOP)
+        clear_button = Button(self, text="Clear answers", command=self.__clear_answers)
+        clear_button.pack(fill=BOTH, side=BOTTOM)
+
+        self.__draw_grid()
+        self.__draw_puzzle()
+
+        self.canvas.bind("<Button-1>", self.__cell_clicked)
+        self.canvas.bind("<Key>", self.__key_pressed)
+
+    def __draw_grid(self):
+        """
+        Draws grid divided with blue lines into 3x3 squares
+        """
+        for i in xrange(10):
+            color = "blue" if i % 3 == 0 else "gray"
+
+            x0 = MARGIN + i * SIDE
+            y0 = MARGIN
+            x1 = MARGIN + i * SIDE
+            y1 = HEIGHT - MARGIN
+            self.canvas.create_line(x0, y0, x1, y1, fill=color)
+
+            x0 = MARGIN
+            y0 = MARGIN + i * SIDE
+            x1 = WIDTH - MARGIN
+            y1 = MARGIN + i * SIDE
+            self.canvas.create_line(x0, y0, x1, y1, fill=color)
+
+    def __draw_puzzle(self):
+        self.canvas.delete("numbers")
+        for i in xrange(9):
+            for j in xrnage(9):
+                answer = self.game.puzzle[i][j]
+                if answer != 0:
+                    x = MARGIN + j * SIDE + SIDE / 2
+                    y = MARGIN + i * SIDE + SIDE / 2
+                    original = self.game.start_puzzle[i][j]
+                    color = "black" if answer == original else "dark goldenrod"
+                    self.canvas.create_text(
+                        x, y, text=answer, tags="numbers", fill=color
+                    )
+
+    def __clear_answers(self):
+        self.game.start()
+        self.canvas.delete("victory")
+        self.__draw_puzzle()
+
+    def __cell_clicked(self, event):
+        if self.game.game_over:
+            return
+
+        x, y = event.x, event.y
+        if (MARGIN < x < WIDTH - MARGIN and MARGIN < y < HEIGHT - MARGIN):
+            self.canvas.focus_set()
+
+            # get row and col numbers from x,y coordinates
+            row, col = (y - MARGIN) / SIDE, (x - MARGIN) / SIDE
+
+            # if cell was selected already - deselect it
+            if (row, col) == (self.row, self.col):
+                self.row, self.col = -1, -1
+            elif self.game.puzzle[row][col] == 0:
+                self.row, self.col = row, col
+
+        self.__draw_cursor()
+
+    def __draw_cursor(self):
+        self.canvas.delete("cursor")
+        if self.row >= 0 and self.col >= 0:
+            x0 = MARGIN + self.col * SIDE + 1
+            y0 = MARGIN + self.row * SIDE + 1
+            x1 = MARGIN + (self.col + 1) * SIDE - 1
+            y1 = MARGIN + (self.row + 1) * SIDE - 1
+            self.canvas.create_rectangle(
+                x0, y0, x1, y1,
+                outline="purple", tags="cursor"
+            )
+
+    def __key_pressed(self, event):
+        if self.game.game_over:
+            return
+        if self.row >= 0 and self.col >= 0 and event.char in "1234567890":
+            self.game.puzzle[self.row][self.col] = int(event.char)
+            self.col, self.row = -1, -1
+            self.__draw_puzzle()
+            self.__draw_cursor()
+            if self.game.check_win():
+                self.__draw_victory()
+
+    def __draw_victory(self):
+        
 
 
-
-# def display_puzzle(board):
-#     top = "|--------------------------------|"
-#     mid = "|----------+----------+----------|"
-
-#     print(top)
-#     for x in range(9):
-#         for y in range(9):
-#             if ((x == 3 or x == 6) and y == 0):
-#                 print(mid)
-#             if (y == 0 or y == 3 or y == 6):
-#                 print("|", end=" ")
-#             print(" " + str(board[x][y]), end=" ")
-#             if y == 8:
-#                 print("|")
-
-#     print(top)
-
-# # def CheckValid(board, row, col, num):
-
-# #     for y in range(9):
-# #         for x in range(9):
-
-
-
-# load_puzzle()
-
+        
