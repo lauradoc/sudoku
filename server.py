@@ -215,7 +215,51 @@ class SudokuUI(Frame):
                 self.__draw_victory()
 
     def __draw_victory(self):
-        
+        # create a oval (which will be a circle)
+        x0 = y0 = MARGIN + SIDE * 2
+        x1 = y1 = MARGIN + SIDE * 7
+        self.canvas.create_oval(
+            x0, y0, x1, y1,
+            tags="victory", fill="orange"
+        )
+        # create text
+        x = y = MARGIN + 4 * SIDE + SIDE / 2
+        self.canvas.create_text(
+            x,y,
+            text="You win!", tags="winner",
+            fill="white", font=("Arial", 32)
+        )
+
+
+def parse_arguments():
+    """
+    Parses arguments of the form:
+        sudoku.py <board name>
+    Where  `board name` must be in the `BOARD` list
+    """
+    arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument("--board", 
+                            help="Desired board name", 
+                            type=str,
+                            choices=BOARDS,
+                            required=True)
+
+    # Creates a dictionary of keys = argument flag, and value = argument
+    args = arg_parser.parse_args()
+    return args['board']
+
+
+if __name__ == '__main__':
+    board_name = parse_arguments()
+
+    with open('%s.sudoku' % board_name, 'r') as boards_file:
+        game = SudokuGame(boards_file)
+        game.start()
+
+        root = Tk()
+        SudokuUI(root, game)
+        root.geometry("%dx%d" % (WIDTH, HEIGHT + 40))
+        root.mainloop()
 
 
         
